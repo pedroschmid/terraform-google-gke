@@ -1,7 +1,7 @@
 provider "google" {
-  credentials = file("keys/gcp-service-account-key.json")
-  project     = "k8s-github"
-  region      = "us-east2"
+  credentials = file("keys/service-account-key.json")
+  project     = var.PROJECT
+  region      = var.REGION
 }
 
 terraform {

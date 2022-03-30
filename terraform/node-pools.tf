@@ -1,5 +1,5 @@
 resource "google_service_account" "kubernetes" {
-  account_id = "kubernetes"
+  account_id = var.KUBERNETES_SERVICE_ACCOUNT
 }
 
 resource "google_container_node_pool" "general" {
@@ -14,7 +14,7 @@ resource "google_container_node_pool" "general" {
 
   node_config {
     preemptible  = false
-    machine_type = "e2-small"
+    machine_type = var.MACHINE_TYPE
 
     labels = {
       role = "general"
@@ -22,7 +22,7 @@ resource "google_container_node_pool" "general" {
 
     service_account = google_service_account.kubernetes.email
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
+      var.OAUTH_CLOUD_PLATAFORM_API
     ]
   }
 }
@@ -43,10 +43,10 @@ resource "google_container_node_pool" "spot" {
 
   node_config {
     preemptible  = true
-    machine_type = "e2-small"
+    machine_type = var.MACHINE_TYPE
 
     labels = {
-      team = "devops"
+      team = "spot"
     }
 
     taint {
@@ -57,7 +57,7 @@ resource "google_container_node_pool" "spot" {
 
     service_account = google_service_account.kubernetes.email
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
+      var.OAUTH_CLOUD_PLATAFORM_API
     ]
   }
 }

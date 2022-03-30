@@ -1,6 +1,11 @@
+locals {
+  REGION_B = "${var.REGION}-b"
+  REGION_C = "${var.REGION}-c"
+}
+
 resource "google_container_cluster" "primary" {
   name                     = "primary"
-  location                 = "us-east1-a"
+  location                 = local.REGION_B
   remove_default_node_pool = true
   initial_node_count       = 1
   network                  = google_compute_network.main.self_link
@@ -11,7 +16,7 @@ resource "google_container_cluster" "primary" {
 
   # Optional, if you want multi-zonal cluster
   node_locations = [
-    "us-east1-b"
+    local.REGION_C
   ]
 
   addons_config {
@@ -29,7 +34,7 @@ resource "google_container_cluster" "primary" {
   }
 
   workload_identity_config {
-    workload_pool = "devops.svc.id.goog"
+    workload_pool = var.WORKLOAD_POOL
   }
 
   ip_allocation_policy {
@@ -40,6 +45,6 @@ resource "google_container_cluster" "primary" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false # true if want to use bastion host to access | false if want to access public
-    master_ipv4_cidr_block  = "172.16.0.0/28"
+    master_ipv4_cidr_block  = var.MASTER_IPV4_CIDR_BLOCK
   }
 }

@@ -1,9 +1,11 @@
 resource "google_project_service" "compute" {
-  project = "k8s-github"
+  project = var.PROJECT
   service = "compute.googleapis.com"
+  disable_dependent_services = true
 }
 
 resource "google_project_service" "container" {
-  project = "k8s-github"
+  project = var.PROJECT
   service = "container.googleapis.com"
+  disable_dependent_services = true
 }
