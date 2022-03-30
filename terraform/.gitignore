@@ -34,4 +34,4 @@ override.tf.json
 terraform.rc
 
 # Credentials
-gcp-service-account-key.json
+keys/
